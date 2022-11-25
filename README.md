@@ -24,7 +24,6 @@ webpack 本身能处理 js 和 json 文件，不用借助 loader 和插件，对
 
 > npm install --save-dev mini-css-extract-plugin
 
-
 1.2.3 html template
 
 我需要让 webpack 将打包后的 js代码、css文件、图片文件插入自定义的 `.html` 模板文件中，这要借助`html-webpack-plugin` 实现。
@@ -37,57 +36,10 @@ webpack 本身能处理 js 和 json 文件，不用借助 loader 和插件，对
 
 安装了 loader 和 plugins 还要做配置才会生效，webpack 配置在项目根目录的 `webpack.config.js`文件中进行。
 
-```js
-// webpack.config.js
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+配置 webpack.config.js，见`./webpack.config.js`
 
-module.exports = {
-  entry: './src/index.js', // 打包的入口文件，可多个
-  output: { // 打包后的输出配置
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, './dist'),
-    clean: true
-  },
-  devServer: {
-    static: './dist', // 告诉 webpack-dev-server 观察哪个文件夹
-  },
-  module: { // loader 配置写到 rules 字段内
-    rules: [
-      {
-        test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-      },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
-        generator: { // 配置输出文件
-          filename: 'imgs/[name].[hash:6][ext]'
-        }
-      },
-    ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({ 
-      template: 'index.ejs', // 自定义html模板文件，使用ejs文件，避免与html-loader冲突
-      title: 'Cook it!',
-      favicon: 'favicon.png',
-      hash: true
-    }),
-    new MiniCssExtractPlugin(),
-  ]
-}
+配置 package.json 的 script 字段，见 `./package.json`
 
-// package.json 的 script 字段
-{
-  "script": {
-    "dev": "webpack serve --open --mode development",
-    "build": "webpack --mode production"
-  }
-}
-```
+上述配置能让 webpack 打包 js、图片，插入到自定义 html 模板中，并且配置了开发服务器可实时预览修改源代码后的结果。
 
-上述配置能让 webpack 打包 js、图片，插入到我给的 html 模板中，并且配置了开发服务器可实时预览修改源代码后的结果。
-
-// 成文。2022.11.25
+// 成文，2022.11.25，考虑后续将不同配置项单独写成一个文件
