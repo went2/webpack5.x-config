@@ -1,5 +1,3 @@
-# webpack 通用配置
-
 # webpack 基本配置
 
 以下介绍一个新项目如何配置 webpack，主要内容和 [webpack 官方文档的 Guides](https://webpack.js.org/guides/getting-started/) 大同小异。
